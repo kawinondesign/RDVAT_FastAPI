@@ -10,26 +10,34 @@
 
 - REST API (FastAPI) ครอบ SOAP Service ของกรมสรรพากร
 - รองรับการตรวจสอบทีละ 1 ราย หรือหลายรายพร้อมกัน
-- CLI (`rd_vat_cli.py`) ใช้งานง่ายผ่าน Terminal
+- CLI (`rd_vat_cli.py`) ใช้งานผ่าน Terminal
 - Log แสดง SOAP Request และ Response
 - เลือกแสดง RAW XML สำหรับ Debug ได้
-- แสดงผลลัพธ์ภาษาไทย อ่านง่าย
+- แสดงผลลัพธ์ภาษาไทย
 
 # RD VAT Proxy (FastAPI) 
 
-Proxy แบบ REST สำหรับเรียก **VAT Service** ของกรมสรรพากร และมี endpoint สำหรับ passthrough SOAP raw ได้ด้วย
+Proxy แบบ REST สำหรับเรียก **VAT Service** ของกรมสรรพากร และมี endpoint สำหรับ passthrough SOAP raw
 
 - RD VAT Endpoint: `https://rdws.rd.go.th/serviceRD3/vatserviceRD3.asmx`
 - ใช้ username/password = `anonymous` ตามคู่มือ
-- สร้างมาพร้อม Postman collection, Dockerfile, docker-compose
+- สร้าง Postman collection, Dockerfile, docker-compose
 
 ## Run (Local)
 
 ```bash
-python -m venv .venv && . .venv/bin/activate   # Windows: .venv\Scripts\activate
+python -m venv .venv
+.venv\Scripts\activate   # บน Windows
 pip install -r requirements.txt
+```
+
+
+## การรัน API
+```bash
 uvicorn app.main:app --reload --port 8000
 ```
+เปิดดู API Docs ได้ที่ `http://127.0.0.1:8000/docs`
+
 
 ## Run (Docker)
 
@@ -54,7 +62,7 @@ metadata ของ proxy (RD endpoint, headers)
 {
   "username": "anonymous",
   "password": "anonymous",
-  "TIN": "",
+  "TIN": "0205543000870",
   "Name": "",
   "ProvinceCode": 0,
   "BranchNumber": 0,
@@ -68,7 +76,7 @@ metadata ของ proxy (RD endpoint, headers)
 {
   "username": "anonymous",
   "password": "anonymous",
-  "TINs": ["0105557074061","0107544000123"]
+  "TINs": ["0205543000870","0115552010743","0105541031361","0107548000579","0115557002595"]
 }
 ```
 
@@ -83,15 +91,10 @@ passthrough SOAP ได้โดยตรง (กำหนด xml + url + header
 ```
 
 ## Postman
-Import `RD VAT v2.postman_collection.json` แล้วยิงได้ทันที (มีตัวอย่างครบทั้ง REST และ SOAP passthrough)
-
-## หมายเหตุ
-- ถ้าต้องการเรียก CommonService เพื่อตรวจรหัสจังหวัด/อำเภอ สามารถต่อยอดเพิ่มโมดูล SOAP แบบเดียวกันในไฟล์ใหม่ได้
-- ทดสอบบน Python 3.12 / Uvicorn 2025
-
+Import `RD VAT postman_collection.json` แล้วยิงได้
 
 ## Logging แสดง Request/Response บน Terminal
-- ค่าดีฟอลต์จะ log SOAP **Request (Preview)** และแต่ละ **Response Record** ในรูปแบบหัวข้อภาษาไทย
+- ค่า Default ต์จะ log SOAP **Request (Preview)** และแต่ละ **Response Record** ในรูปแบบหัวข้อภาษาไทย
 - ปรับระดับ log ได้ด้วย env `LOG_LEVEL` (เช่น DEBUG/INFO/WARN).
 
 ```bash
