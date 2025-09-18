@@ -154,7 +154,6 @@ def _extract_batch_columnar(parsed_root: dict):
             if v is None:
                 continue
 
-            # ✅ ครอบคลุมทุกเคส
             if isinstance(v, dict) and "anyType" in v:
                 # anyType อาจเป็น list หรือ ค่าเดียว
                 at = v["anyType"]
