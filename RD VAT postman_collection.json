@@ -1,0 +1,130 @@
+{
+  "info": {
+    "name": "RD VAT v2",
+    "_postman_id": "6b5e9c92-7f5f-4b90-a1f1-abcdef123456",
+    "description": "Proxy + Raw SOAP passthrough for RD VAT",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/health",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "health"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Meta",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/meta",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "meta"
+          ]
+        }
+      }
+    },
+    {
+      "name": "VAT Service (single)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"anonymous\",\n  \"password\": \"anonymous\",\n  \"TIN\": \"\",\n  \"Name\": \"\",\n  \"ProvinceCode\": 0,\n  \"BranchNumber\": 0,\n  \"AmphurCode\": 0\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/vat/service",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "vat",
+            "service"
+          ]
+        }
+      }
+    },
+    {
+      "name": "VAT Service (batch)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"anonymous\",\n  \"password\": \"anonymous\",\n  \"TINs\": [\n    \"0105557074061\",\n    \"0107544000123\"\n  ]\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/vat/service-batch",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "vat",
+            "service-batch"
+          ]
+        }
+      }
+    },
+    {
+      "name": "SOAP passthrough (raw)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"url\": \"https://rdws.rd.go.th/serviceRD3/vatserviceRD3.asmx\",\n  \"headers\": {\n    \"Content-Type\": \"application/soap+xml; charset=utf-8\"\n  },\n  \"xml\": \"<soap:Envelope xmlns:soap=\\\"http://www.w3.org/2003/05/soap-envelope\\\" xmlns:vat=\\\"https://rdws.rd.go.th/serviceRD3/vatserviceRD3\\\"><soap:Header/><soap:Body><vat:Service><vat:username>anonymous</vat:username><vat:password>anonymous</vat:password><vat:TIN></vat:TIN><vat:Name></vat:Name><vat:ProvinceCode>0</vat:ProvinceCode><vat:BranchNumber>0</vat:BranchNumber><vat:AmphurCode>0</vat:AmphurCode></vat:Service></soap:Body></soap:Envelope>\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/soap/raw",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "soap",
+            "raw"
+          ]
+        }
+      }
+    }
+  ]
+}
